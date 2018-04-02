@@ -7,6 +7,7 @@ The input is a matrix given by standard input, where the empty cell is represent
 
 ## Execution example
 
+```
 $ make
 $ ./main < hard.in
 Loaded sudoku:
