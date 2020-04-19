@@ -1,8 +1,8 @@
 CC=g++
 CPPFLAGS=-std=c++1z
 
-OBJ=Solver.o Sudoku.o
-DEPS=Sudoku.hpp Solver.hpp
+OBJ=Solver.o Sudoku.o Generator.o SudokuToLatex.o
+DEPS=Sudoku.hpp Solver.hpp Generator.hpp SudokuToLatex.hpp
 
 %.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CPPFLAGS)

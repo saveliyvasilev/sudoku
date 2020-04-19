@@ -2,19 +2,35 @@
 #include <bitset>
 #include <set>
 #include <tuple>
+#include <vector>
 
-Sudoku::Sudoku(){
-	throw -123;
+Sudoku::Sudoku() : 
+	m(std::vector<std::vector<int> > (9, std::vector<int>(9, 0))),
+	unset_count(81) {
 }
 
-Sudoku::Sudoku(std::istream &is){
-	unset_count = 81;
+Sudoku::Sudoku(std::istream &is) : 
+	m(std::vector<std::vector<int> > (9, std::vector<int>(9, 0))),
+	unset_count(81) {
 	for(int i = 0; i < 9; i++)
 		for(int j = 0; j < 9; j++){
 			is >> m[i][j];
 			unset_count--;
 		}
 }
+
+Sudoku& Sudoku::operator=(const Sudoku &s){
+	for(int i = 0; i < 9; i++){
+		for(int j = 0; j < 9; j++){
+			m[i][j] = s.m[i][j];
+			canmatrix[i][j] = s.canmatrix[i][j];
+		}
+	}
+
+	unset_count = s.unset_count;
+	return *this;
+}  
+
 
 std::ostream& operator<<(std::ostream& os, const Sudoku& s){
 	os << std::endl;
@@ -36,17 +52,17 @@ void Sudoku::set(int i, int j, int num){
 }
 
 void Sudoku::unset(int i, int j){
-	this->set(i, j, 0);
+	set(i, j, 0);
 }
 
 void Sudoku::unset(std::set<std::tuple<int, int> >& ijs){
-	for(auto ij : ijs)
-		this->unset(std::get<0>(ij), std::get<1>(ij));
+	for(auto [i, j] : ijs)
+		unset(i, j);
 }
 
-void Sudoku::branch_pos(int &i, int &j){
-	this->refresh_candidates();
-	int min = 10;
+std::pair<int, int> Sudoku::branch_pos(){
+	refresh_candidates();
+	int min = 10, i, j;
 	for(int k = 0; k < 9; k++)
 		for(int l = 0; l < 9; l++)
 			if(m[k][l] == 0 && min > canmatrix[k][l].size()){
@@ -54,13 +70,26 @@ void Sudoku::branch_pos(int &i, int &j){
 				i = k;
 				j = l;
 			}
+	return std::make_pair(i, j);
+}
+
+std::pair<int, int> Sudoku::completion_pos(){
+	refresh_candidates();
+	int max = 0, i, j;
+	for(int k = 0; k < 9; k++)
+		for(int l = 0; l < 9; l++)
+			if(m[k][l] == 0 && max < canmatrix[k][l].size()){
+				max = canmatrix[k][l].size();
+				i = k;
+				j = l;
+			}
+	return std::make_pair(i, j);
 }
 
 void Sudoku::refresh_candidates(){
 	for(int i = 0; i < 9; i++)
 		for(int j = 0; j < 9; j++){
-			canmatrix[i][j].clear();
-			this->candidates(i, j, canmatrix[i][j]);
+			canmatrix[i][j] = candidates(i, j);
 		}
 }
 
@@ -121,20 +150,30 @@ void Sudoku::reset_sq_non_candidates(int sq_i, int sq_j, std::bitset<10> &cs){
 			cs.reset(m[i][j]);
 }
 
-void Sudoku::candidates(int i, int j, std::set<int> &candidates){
-	if(m[i][j] != 0){
-		candidates.clear();
-		return;
+int Sudoku::get_value(int i, int j){
+	return m[i][j];
+}
+
+void Sudoku::clear(){
+	for(int i = 0; i < 9; i++){
+		for(int j = 0; j < 9; j++){
+			unset(i, j);
+		}
 	}
+}
+
+std::set<int> Sudoku::candidates(int i, int j){
+	std::set<int> candidates;
+	if(m[i][j] != 0)
+		return candidates;
+	
 	std::bitset<10> cs = std::bitset<10>().set();
 	reset_row_non_candidates(i, cs);
 	reset_col_non_candidates(j, cs);
 	reset_sq_non_candidates(i/3, j/3, cs);
 
-	for(int k = 1; k < 10; k++){
-		if(cs.test(k)){
+	for(int k = 1; k < 10; k++)
+		if(cs.test(k))
 			candidates.insert(k);
-		}
-	}
-	return;
+	return candidates;
 }

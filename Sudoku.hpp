@@ -4,10 +4,11 @@
 #include <iostream>
 #include <set>
 #include <tuple>
+#include <vector>
 
 class Sudoku{
 private:
-	int m[9][9];
+	std::vector<std::vector<int>> m;
 	std::set<int> canmatrix[9][9];
 	int unset_count;
 	bool row_solved(int i);
@@ -21,14 +22,19 @@ private:
 public:
 	Sudoku();
 	Sudoku(std::istream&);
+	Sudoku& operator=(const Sudoku &other);
 	
-	void branch_pos(int &i, int &j);
+	int get_value(int i, int j);
+	std::pair<int, int> branch_pos();
+	std::pair<int, int> completion_pos();
 	void set(int i, int j, int num);
 	void unset(int i, int j);
 	void unset(std::set<std::tuple<int, int> > &);
+	void clear();
 	bool solved();
-	void candidates(int i, int j, std::set<int>&);
+	std::set<int> candidates(int i, int j);
 
+	void html_output(std::ostream& os);
 	friend std::ostream& operator<<(std::ostream& stream, const Sudoku& sudoku);
 };
 
