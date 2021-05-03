@@ -66,7 +66,7 @@ void SudokuToLatex::sudoku_footer(std::string &s, const std::string &legend){
     		 "\\end{scope}\n");
 }
 
-void SudokuToLatex::sudoku_body(std::string &s, Sudoku &sudoku){
+void SudokuToLatex::sudoku_body(std::string &s, const Sudoku &sudoku){
 	for(int i = 0; i < 9; i++){
 		s.append("\\setrow ");
 		for(int j = 0; j < 9; j++){

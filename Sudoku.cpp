@@ -93,7 +93,7 @@ void Sudoku::refresh_candidates(){
 		}
 }
 
-bool Sudoku::sq_solved(int sq_i, int sq_j){
+bool Sudoku::sq_solved(int sq_i, int sq_j) const {
 	std::bitset<10> slots;
 	static std::bitset<10> target(0b1111111110);
 	for(int i = sq_i * 3; i < sq_i * 3 + 3; i++)
@@ -102,7 +102,7 @@ bool Sudoku::sq_solved(int sq_i, int sq_j){
 	return target == slots;
 }
 
-bool Sudoku::row_solved(int i){
+bool Sudoku::row_solved(int i) const {
 	std::bitset<10> slots;
 	static std::bitset<10> target(0b1111111110);
 	for(int j = 0; j < 9; j++)
@@ -110,7 +110,7 @@ bool Sudoku::row_solved(int i){
 	return target == slots;
 }
 
-bool Sudoku::col_solved(int j){
+bool Sudoku::col_solved(int j) const {
 	std::bitset<10> slots;
 	static std::bitset<10> target(0b1111111110);
 	for(int i = 0; i < 9; i++)
@@ -118,7 +118,7 @@ bool Sudoku::col_solved(int j){
 	return target == slots;
 }
 
-bool Sudoku::solved(){
+bool Sudoku::solved() const {
 	if(unset_count > 0)
 		return false;
 	for(int i = 0; i < 9; i++)
@@ -134,23 +134,23 @@ bool Sudoku::solved(){
 	return true;
 }
 
-void Sudoku::reset_row_non_candidates(int i, std::bitset<10> &cs){
+void Sudoku::reset_row_non_candidates(int i, std::bitset<10> &cs) const {
 	for(int j = 0; j < 9; j++)
 		cs.reset(m[i][j]);
 }
 
-void Sudoku::reset_col_non_candidates(int j, std::bitset<10> &cs){
+void Sudoku::reset_col_non_candidates(int j, std::bitset<10> &cs) const {
 	for(int i = 0; i < 9; i++)
 		cs.reset(m[i][j]);
 }
 
-void Sudoku::reset_sq_non_candidates(int sq_i, int sq_j, std::bitset<10> &cs){
+void Sudoku::reset_sq_non_candidates(int sq_i, int sq_j, std::bitset<10> &cs) const {
 	for(int i = sq_i * 3; i < sq_i * 3 + 3; i++)
 		for(int j = sq_j * 3; j < sq_j * 3 + 3; j++)
 			cs.reset(m[i][j]);
 }
 
-int Sudoku::get_value(int i, int j){
+int Sudoku::get_value(int i, int j) const {
 	return m[i][j];
 }
 
@@ -162,7 +162,7 @@ void Sudoku::clear(){
 	}
 }
 
-std::set<int> Sudoku::candidates(int i, int j){
+std::set<int> Sudoku::candidates(int i, int j) const {
 	std::set<int> candidates;
 	if(m[i][j] != 0)
 		return candidates;

@@ -5,10 +5,10 @@ OBJ=Solver.o Sudoku.o Generator.o SudokuToLatex.o
 DEPS=Sudoku.hpp Solver.hpp Generator.hpp SudokuToLatex.hpp
 
 %.o: %.cpp $(DEPS)
-	$(CC) -c -o $@ $< $(CPPFLAGS)
+	$(CC) -g -c -o $@ $< $(CPPFLAGS)
 
 main: $(OBJ)
-	$(CC) main.cpp -o $@ $^ $(CPPFLAGS)
+	$(CC) -g main.cpp -o $@ $^ $(CPPFLAGS)
 
 
 .PHONY: clean
