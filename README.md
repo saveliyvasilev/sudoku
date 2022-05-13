@@ -36,3 +36,12 @@ Solved sudoku:
 1 6 4 8 7 5 2 9 3
 
 Time elapsed 0.030215s
+
+===
+
+To generate a PDF with sudous using this code run:
+
+```bash
+./main --pdf 15 1.01
+pdflatex output.tex
+```
