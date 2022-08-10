@@ -1,5 +1,5 @@
-CC=g++
-CPPFLAGS=-std=c++17
+CC=clang++
+CPPFLAGS=-std=c++17 -stdlib=libc++
 
 OBJ=Solver.o Sudoku.o Generator.o SudokuToLatex.o
 DEPS=Sudoku.hpp Solver.hpp Generator.hpp SudokuToLatex.hpp
