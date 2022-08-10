@@ -1,14 +1,15 @@
 CC=clang++
-CPPFLAGS=-std=c++17 -stdlib=libc++
+CPPFLAGS=-std=c++17 -stdlib=libc++ -g
+#CPPFLAGS=-std=c++17 -stdlib=libc++ -gdwarf-4 -pg  # for gprof
 
 OBJ=Solver.o Sudoku.o Generator.o SudokuToLatex.o
 DEPS=Sudoku.hpp Solver.hpp Generator.hpp SudokuToLatex.hpp
 
 %.o: %.cpp $(DEPS)
-	$(CC) -g -c -o $@ $< $(CPPFLAGS)
+	$(CC) -c -o $@ $< $(CPPFLAGS)
 
 main: $(OBJ)
-	$(CC) -g main.cpp -o $@ $^ $(CPPFLAGS)
+	$(CC) main.cpp -o $@ $^ $(CPPFLAGS)
 
 
 .PHONY: clean
