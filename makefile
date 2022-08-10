@@ -1,5 +1,5 @@
 CC=g++
-CPPFLAGS=-std=c++1z
+CPPFLAGS=-std=c++17
 
 OBJ=Solver.o Sudoku.o Generator.o SudokuToLatex.o
 DEPS=Sudoku.hpp Solver.hpp Generator.hpp SudokuToLatex.hpp
@@ -17,12 +17,12 @@ clean:
 	rm -f ./*.o main
 
 runeasy: main
-	./main < 500.easy
+	./main -s < 500.easy
 
 
 runsol: main
-	./main < 500.sol
+	./main -s < 500.sol
 
 
 runin: main
-	./main < 500.in
+	./main -s < 500.in
